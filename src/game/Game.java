@@ -7,15 +7,10 @@ import java.util.Scanner;
 public class Game {
 	private static DeckOfCards deck = new DeckOfCards();
 
-	public static void main(String[] args) {
-		
-		
-		//start game simulation
-		game();
-		
-		
-		
-	}
+//	public static void main(String[] args) {
+//		//start game simulation
+//		game();
+//	}
 	
 	public static void game() {
 		//shuffle deck
@@ -33,16 +28,16 @@ public class Game {
 		initiateDeck(deck, user1Deck);
 		initiateDeck(deck, user2Deck);
 		
+		
+		
+		
 //		System.out.println(user1Deck.toString());
 //		System.out.println(user2Deck.toString());
-		
-		
-		
 	}
 	
 	//check if the card placement is valid
 	//e.g queen can only be placed on top of a king
-	public static void check(ArrayList<Card> pile, Card card) {
+	public boolean check(ArrayList<Card> pile, Card card) {
 		//String[] deckOrder = {"ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king"};
 		HashMap<Character, Integer> deckOrder = new HashMap<>();
 		deckOrder.put('a', 0);
@@ -59,16 +54,19 @@ public class Game {
 		deckOrder.put('q', 11);
 		deckOrder.put('k', 12);
 		
-		//store value of last card to compare it to incoming card
-		int len = pile.size();
-		int pileCardValue = deckOrder.get(pile.get(len));
+		boolean test = false;
 		
-		int cardValue = deckOrder.get(card);
+		//store value of last card to compare it to incoming card
+		int len = pile.size() - 1;
+		int pileCardValue = deckOrder.get(pile.get(len).toString().toLowerCase().charAt(0));
+		
+		int cardValue = deckOrder.get(card.toString().toLowerCase().charAt(0));
 		
 		if (cardValue < pileCardValue) {
 			pile.add(card);
+			test = true;
 		}
-		
+		return test;
 	}
 	
 	public static void initiateDeck(DeckOfCards deck, ArrayList<Card> userDeck) {

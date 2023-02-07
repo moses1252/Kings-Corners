@@ -28,8 +28,7 @@ public class DeckOfCards {
     /**
      * This is a zero argument constructor that will build a full Deck of Cards
      */
-    public DeckOfCards()
-    {
+    public DeckOfCards() {
         List<String> suits = Card.getValidSuits(); //this is calling a static method
                                                     //so we do NOT need an instance of Card
                                                     //to call it
@@ -37,10 +36,10 @@ public class DeckOfCards {
 
         deck = new ArrayList<>();
 
-        for (String suit:suits)
-        {
-            for (String faceName:faceNames)
-                deck.add(new Card(faceName,suit));
+        for (String suit:suits) {
+            for (String faceName:faceNames) {
+            	deck.add(new Card(faceName,suit));
+            }
         }
         //backOfCardImage = new Image("./images/backOfCard.png");
     }
@@ -64,9 +63,8 @@ public class DeckOfCards {
     /**
      * This method will "deal" the top card off the deck
      */
-    public Card dealTopCard()
-    {
-        if (deck.size()>0)
+    public Card dealTopCard() {
+        if (deck.size() > 0)
             return deck.remove(0);
         else
             return null;
@@ -77,8 +75,7 @@ public class DeckOfCards {
     /**
      * This method will shuffle the deck of cards
      */
-    public void shuffle()
-    {
+    public void shuffle() {
         Collections.shuffle(deck);
     }
 }

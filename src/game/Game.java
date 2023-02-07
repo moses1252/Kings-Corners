@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class Game {
-	private static DeckOfCards deck;
+	private static DeckOfCards deck = new DeckOfCards();
 
 	// create 4 piles and 4 kings corner piles
 	private static ArrayList<Card> pile1 = new ArrayList<>();
@@ -23,20 +23,39 @@ public class Game {
 
 	public static void main(String[] args) {
 		// start game simulation
+		System.out.println("Welcome to my program Kings Corner!!!");
+		System.out.println("This is a two player game, and there can only be 1 winner.");
+		System.out.println("Players should know the general rules of Kings Corner." 
+				+"\nIf not please take a look at the projects readme file.");
+		System.out.println("There will be 3 options for a user, and they will have to"
+				+ " enter a letter, such as d, or a number, such as 4");
+		System.out.println("The game will end when a player wins");
+		System.out.print("Press 1 and press Enter to start game: ");
+		
+		Scanner rules = new Scanner(System.in);
+		String understand;
+		
+		//make sure user understand rules
+		boolean agree = true;
+		while (agree) {
+			understand = rules.next();
+			if (understand.compareTo("1") == 0) {
+				agree = false;
+			} else {
+				System.out.print("Press 1 and press Enter to start game: ");
+			}
+		}
+		System.out.println("\nPlayer 1 will start the game!!");
+		System.out.println("--------------------------------------------------------------");
+		
 		game();
 	}
 
 	// set up game
 	public static void game() {
 		// shuffle deck
-		deck = new DeckOfCards();
 		deck.shuffle();
-
-		// game starting
-		// give user 7 cards each
-		// place one face up card in each pile
-		// leave king corner empty
-
+		
 		// fill user's deck
 		initiateDeck(deck, user1Deck);
 		initiateDeck(deck, user2Deck);
@@ -44,6 +63,7 @@ public class Game {
 		// deal 1 card to each pile
 		initiatePiles();
 		
+		// both players keep playing until game ends
 		boolean on = true;
 		while(on) {
 			
@@ -53,7 +73,15 @@ public class Game {
 				on = false;
 				break;
 			} else {
+				System.out.println("\nPlayer 1 turn!!");
+				System.out.println("--------------------------------------------------------------");
 				//player 1 turn
+				//show user deck
+				//show user piles
+				System.out.print("Player's 1 Deck: ");
+				printUserDeck(user1Deck);
+				System.out.println("\n---Current Piles---");
+				printTable();
 				playerTurn(user1Deck);
 			}
 			
@@ -63,7 +91,13 @@ public class Game {
 				on = false;
 				break;
 			} else {
+				System.out.println("\nPlayer 2 turn!!");
+				System.out.println("--------------------------------------------------------------");
 				//user2 turn
+				System.out.print("Player's 2 Deck: ");
+				printUserDeck(user2Deck);
+				System.out.println("---Current Piles---");
+				printTable();
 				playerTurn(user2Deck);
 			}
 		}
@@ -75,29 +109,31 @@ public class Game {
 	//player turn
 	public static void playerTurn(ArrayList<Card> userDeck) {
 		//they should have three options
-		//a. Place a card down
-		//b. Move a pile to another pile
-		//c. End turn
+		//menu1:
+			//a. Place a card down
+			//b. Move a pile to another pile
+			//c. End turn
 		
-		//create menu for user
-		char choice = action();
-		turnInProgress(userDeck, choice);
-	}
-	
-	private static boolean turnInProgress(ArrayList<Card> userDeck, char choice) {
-		// TODO Auto-generated method stub
-		boolean endTurn = true;
-		switch(choice) {
-		case 'a':
-			placeCardInDeck(userDeck);
-			break;
-		case 'b':
-			//mergePile();
-			break;
-		case 'c':
-			return false;
+		boolean playerTurn = true;
+		
+		//players turn should only end when player decides too!!
+		while (playerTurn) {
+			//prompt choice for user and store answer
+			char choice = action();
+			
+			switch(choice) {
+			case 'a':
+				placeCardInDeck(userDeck);
+				break;
+			case 'b':
+				//mergePile();
+				break;
+			case 'c':
+				playerTurn = false;
+				break;
+			}
+			
 		}
-		return true;
 	}
 
 	//action player can do, place card, move a pile, or end turn
@@ -106,44 +142,51 @@ public class Game {
 		Scanner input = new Scanner(System.in);
 		String user = "";
 		
+		//prompt user the three options
+		userOptions();
+		
 		//make sure user puts correct value
 		//use a while loop to ensure the program continues running
 		boolean choice = true;
-		System.out.print("Enter a, b, c for your choice: ");
-		user = input.nextLine();
-		
-		//make sure user puts a valid answer
-		if (user.compareToIgnoreCase("a") == 0 
-				|| user.compareToIgnoreCase("b") == 0 
-				||user.compareToIgnoreCase("c") == 0) {
-			choice = false;
-		} else {
-			System.out.println("Error: Enter a, b, or c!!");
+		while (choice) {
+			System.out.print("Enter a, b, c for your choice: ");
+			user = input.nextLine();
+			
+			//make sure user puts a valid answer
+			if (user.compareToIgnoreCase("a") == 0 
+					|| user.compareToIgnoreCase("b") == 0 
+					||user.compareToIgnoreCase("c") == 0) {
+				choice = false;
+			} else {
+				System.out.println("Error: Enter a, b, or c!!");
+			}
 		}
 		
 		//return user choice
 		return user.charAt(0);
 	}
 	
+	//allow user to place card down on any 4 piles if move is valid
 	private static void placeCardInDeck(ArrayList<Card> userDeck) {
 		//two options
 		//1. player can move a card to standard pile
 		//2. player can move a king into the corner
 		
 		Scanner input = new Scanner(System.in);
-		boolean leave = true; //this will allow the user to place cards until they are done		
-		String cardSelected = "";//get card choice from user
+		String cardSelected = ""; //get card choice from user
+		int pileSelected = 0; //get pile choice from user
 		
-		//get pilce choice from user
-		int pileSelected = 0;
-		
+		boolean leave = true; //this will allow the user to place cards until they are done
 		while (leave) {
+			
 			//have user choose card they want to place
 			//make sure user input is valid for pile selection
 			boolean choice1 = true;
 			while (choice1) {
-				//show user their deck
-				System.out.print("Choose your card. Enter a, b, ect...:");
+				//prompt user their card options to pick from
+				printOptions(user1Deck);
+				
+				System.out.print("Choose your card. Enter a, b, or any options available:");
 				cardSelected = input.nextLine();
 				System.out.println();
 				
@@ -159,9 +202,7 @@ public class Game {
 			//make sure user input is valid for pile selection
 			boolean choice2 = true;
 			while (choice2) {
-				
 				//show piles to user
-				System.out.println();
 				printPiles();
 				
 				//give user option of what pile they want to place card on
@@ -169,7 +210,7 @@ public class Game {
 				pileSelected = input.nextInt();
 				
 				//make sure user puts a valid answer
-				if (pileSelected >= 0 && pileSelected < 8) {
+				if (pileSelected >= 1 && pileSelected < 8) {
 					choice2 = false;
 				} else {
 					System.out.println("Error: Enter a valid number!!!");
@@ -177,65 +218,13 @@ public class Game {
 				
 			}
 			
-			boolean choice3 = true;
-			String end = "";
-			System.out.println("\n\n Are you done?\nEnteryes to stop, or no to continue");
+			System.out.println("end-----------------------------------------");
+			leave = false;
 		}
 		
 	}
-
-
-	// print user options and show piles
-	private static void userOptions() {
-		System.out.println();
-		printPiles();
-
-		System.out.println("\nWhat would you like to do?");
-		System.out.println("a)\tPlace a card\nb)\tMove a pile\nc)\tEnd Turn");
-		System.out.println("\nYour Choice: ");
-	}
-
-	private static ArrayList<Card> returnPile(int pile) {
-		ArrayList<Card> thisPile;
-		if (pile == 1) {
-			thisPile = (ArrayList<Card>) pile1.clone();
-			return thisPile;
-		} else if (pile == 2) {
-			thisPile = (ArrayList<Card>) pile2.clone();
-			return thisPile;
-		} else if (pile == 3) {
-			thisPile = (ArrayList<Card>) pile3.clone();
-			return thisPile;
-		} else if (pile == 4) {
-			thisPile = (ArrayList<Card>) pile4.clone();
-			return thisPile;
-		} else if (pile == 5) {
-			thisPile = (ArrayList<Card>) kingCorner1.clone();
-			return thisPile;
-		} else if (pile == 6) {
-			thisPile = (ArrayList<Card>) kingCorner2.clone();
-			return thisPile;
-		} else if (pile == 7) {
-			thisPile = (ArrayList<Card>) kingCorner3.clone();
-			return thisPile;
-		}
-		thisPile = (ArrayList<Card>) kingCorner4.clone();
-		return thisPile;
-	}
-
-	private static boolean checkWinner() {
-		if (user1Deck.isEmpty()) {
-			System.out.print("Player 1 WON!!");
-			return true;
-		}
-		if (user2Deck.isEmpty()) {
-			System.out.print("Player 2 WON!!");
-			return true;
-		}
-		return false;
-	}
 	
-	//
+	//return the index of the card the user chose
 	public static int userChoice(String choice) {
 		char ans = 'a';
 
@@ -324,6 +313,7 @@ public class Game {
 	}
 
 	// merge a pile to another if the requirements are met
+	//TODO: .clear will not work because it will also clear it for pile1
 	public static void mergePile(ArrayList<Card> pile1, ArrayList<Card> pile2) {
 		if (check(pile1, pile2.get(0))) {
 			pile1.addAll(pile2);
@@ -333,14 +323,16 @@ public class Game {
 					+ " cannot be placed on " + pile1.get(pile1.size() - 1));
 		}
 	}
-
+	
+	//check if the game is over
 	public static boolean gameOver() {
 		if (user1Deck.isEmpty() || user2Deck.isEmpty() || deck.getDeck().isEmpty()) {
 			return true;
 		}
 		return false;
 	}
-
+	
+	//print winner
 	public static String winner() {
 		if (gameOver()) {
 			if (user1Deck.isEmpty()) {
@@ -351,7 +343,22 @@ public class Game {
 		}
 		return "There is no Winner!!!";
 	}
-
+	
+	/*
+	 * all methods below are for printing purposes 
+	 */
+	
+	// main user menu
+	// this should be shown to user when its their turn
+	private static void userOptions() {
+		//System.out.println();
+		//printPiles();
+		System.out.println("\nWhat would you like to do?");
+		System.out.println("a)\tPlace a card\nb)\tMove a pile\nc)\tEnd Turn");
+		System.out.println("\nYour Choice: ");
+	}
+	
+	//print given pile
 	public static String print(ArrayList<Card> pile) {
 		String result = "";
 		for (Card card : pile) {
@@ -360,6 +367,7 @@ public class Game {
 		return result + "___";
 	}
 
+	//print all piles
 	public static void printTable() {
 		System.out.println("Pile 1: " + print(pile1));
 		System.out.println("Pile 2: " + print(pile2));
@@ -372,6 +380,7 @@ public class Game {
 		System.out.println("King Corner 4: " + print(kingCorner4));
 	}
 
+	//print options user can pick from their OWN pile
 	public static void printOptions(ArrayList<Card> pile) {
 		char a = 'a';
 		for (int i = 0; i < pile.size(); i++) {
@@ -380,6 +389,7 @@ public class Game {
 		}
 	}
 
+	//print the user deck
 	public static void printUserDeck(ArrayList<Card> deck) {
 		for (Card card : deck) {
 			System.out.print(card + ", ");
@@ -388,27 +398,34 @@ public class Game {
 	}
 }
 
-//System.out.println(newDeck.getDeck().get(0));
 
-//print out cards by suits
-//for (int i = 0; i < 52; i++) {
-//	if (i % 13 == 0 && i != 0) {
-//		System.out.println();
+
+
+////methods not needed
+//private static ArrayList<Card> returnPile(int pile) {
+//	ArrayList<Card> thisPile;
+//	if (pile == 1) {
+//		thisPile = (ArrayList<Card>) pile1.clone();
+//		return thisPile;
+//	} else if (pile == 2) {
+//		thisPile = (ArrayList<Card>) pile2.clone();
+//		return thisPile;
+//	} else if (pile == 3) {
+//		thisPile = (ArrayList<Card>) pile3.clone();
+//		return thisPile;
+//	} else if (pile == 4) {
+//		thisPile = (ArrayList<Card>) pile4.clone();
+//		return thisPile;
+//	} else if (pile == 5) {
+//		thisPile = (ArrayList<Card>) kingCorner1.clone();
+//		return thisPile;
+//	} else if (pile == 6) {
+//		thisPile = (ArrayList<Card>) kingCorner2.clone();
+//		return thisPile;
+//	} else if (pile == 7) {
+//		thisPile = (ArrayList<Card>) kingCorner3.clone();
+//		return thisPile;
 //	}
-//	System.out.print(deck.dealTopCard() + ", ");
+//	thisPile = (ArrayList<Card>) kingCorner4.clone();
+//	return thisPile;
 //}
-
-//shuffle cards
-//System.out.println("\n\n");
-//newDeck.shuffle();
-////print out cards by suits
-//for (int i = 0; i < 52; i++) {
-//	if (i % 13 == 0 && i != 0) {
-//		System.out.println();
-//	}
-//	System.out.print(newDeck.dealTopCard() + ", ");
-//}
-
-
-//-
-

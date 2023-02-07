@@ -2,6 +2,7 @@
 a game of kings corners implemented with java using Object Oriented Programming, user input, and JUnit testing.
 
 --log
+
 --2-6-2023
 Major Update to Game Class
 Turn taking is now functional between players. Removed unnecessary methods, added more comments for more readable code, organized methods. 

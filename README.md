@@ -3,6 +3,11 @@ a game of kings corners implemented with java using Object Oriented Programming,
 
 --log
 
+--2-8-2023
+90% functional
+Player can now place a card in an empty pile, and a king can be put down in an empty king pile. The player can also move piles if the move is valid. Still needs to be debugged
+ArrayIndexOutOfBoundsException when kings corner pile has a total of 3 cards
+
 --2-7-2023
 Project is more 
 Taking turns now works, piles are now properly updated when a player adds a card.

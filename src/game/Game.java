@@ -104,7 +104,7 @@ public class Game {
 				printTable();
 
 				// draw a card from the pile at the beginning of each turn
-				user1Deck.add(deck.dealTopCard());
+				user2Deck.add(deck.dealTopCard());
 				playerTurn(user2Deck);
 			}
 		}
@@ -406,15 +406,16 @@ public class Game {
 	}
 
 	// print winner
-	public static String winner() {
+	public static void winner() {
 		if (gameOver()) {
 			if (user1Deck.isEmpty()) {
-				return "Player 1 is the Winner!!";
+				System.out.print("Player 1 is the Winner!!");
 			} else if (user2Deck.isEmpty()) {
-				return "Player 2 is the Winner!!";
+				System.out.print("Player 2 is the Winner!!");
+			} else {
+				
 			}
 		}
-		return "There is no Winner!!!";
 	}
 
 	/*

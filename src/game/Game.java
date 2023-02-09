@@ -249,8 +249,8 @@ public class Game {
 			}
 		}
 		
-		ArrayList<Card> pickUpPile = null;
-		ArrayList<Card> recievingPile = null;
+		ArrayList<Card> pickUpPile = new ArrayList<>();
+		ArrayList<Card> recievingPile = new ArrayList<>();
 		
 		// check if card placement is valid
 		mergePile(pile1, pile2, pickUpPile, recievingPile);
@@ -380,11 +380,17 @@ public class Game {
 	// check if card placement is valid
 	//mergePile(pile1, pile2, pickUpPile, recievingPile);
 	public static void mergePile(int pickUp, int receiving, ArrayList<Card> pile1, ArrayList<Card> pile2) {
+		//need to check when moving a pile into an empty array
 		pile1 = getPile(pickUp);
 		pile2 = getPile(receiving);
-		if (check(pile2, pile1.get(0))) {
+		
+		//if the pile is empty
+		if (pile2.isEmpty()) {
 			pile2.addAll(pile1);
-			emptyPile(pickUp);
+			pile1.clear();
+		} else if (check(pile2, pile1.get(0))) {
+			pile2.addAll(pile1);
+			pile1.clear();
 		} else {
 			throw new IllegalArgumentException("Cannot stack these two piles!\nThe " + pile2.get(0)
 					+ " cannot be placed on " + pile1.get(pile1.size() - 1));
@@ -471,7 +477,10 @@ public class Game {
 		switch (pileSelected) {
 		case 1: // pile 1
 			// check if card can be placed
-			if (check(pile1, userDeck.get(cardSelectedIndex))) {
+			if (pile1.isEmpty() && userDeck.get(cardSelectedIndex).toString().toLowerCase().charAt(0) != 'k') {
+				moveCardHelper(pile1, userDeck.get(cardSelectedIndex));
+				userDeck.remove(cardSelectedIndex);
+			} else if (check(pile1, userDeck.get(cardSelectedIndex))) {
 				// pile1.add(userDeck.get(cardSelectedIndex));
 				moveCardHelper(pile1, userDeck.get(cardSelectedIndex));
 				userDeck.remove(cardSelectedIndex);
@@ -480,7 +489,10 @@ public class Game {
 			}
 			break;
 		case 2: // pile 2
-			if (check(pile2, userDeck.get(cardSelectedIndex))) {
+			if (pile2.isEmpty() && userDeck.get(cardSelectedIndex).toString().toLowerCase().charAt(0) != 'k') {
+				moveCardHelper(pile2, userDeck.get(cardSelectedIndex));
+				userDeck.remove(cardSelectedIndex);
+			} else if (check(pile2, userDeck.get(cardSelectedIndex))) {
 				// pile2.add(userDeck.get(cardSelectedIndex));
 				moveCardHelper(pile2, userDeck.get(cardSelectedIndex));
 				userDeck.remove(cardSelectedIndex);
@@ -489,7 +501,10 @@ public class Game {
 			}
 			break;
 		case 3: // pile 3
-			if (check(pile3, userDeck.get(cardSelectedIndex))) {
+			if (pile3.isEmpty() && userDeck.get(cardSelectedIndex).toString().toLowerCase().charAt(0) != 'k') {
+				moveCardHelper(pile3, userDeck.get(cardSelectedIndex));
+				userDeck.remove(cardSelectedIndex);
+			} else if (check(pile3, userDeck.get(cardSelectedIndex))) {
 				// pile3.add(userDeck.get(cardSelectedIndex));
 				moveCardHelper(pile3, userDeck.get(cardSelectedIndex));
 				userDeck.remove(cardSelectedIndex);
@@ -499,7 +514,10 @@ public class Game {
 			break;
 		case 4: // pile 4
 			// check if card can be placed
-			if (check(pile4, userDeck.get(cardSelectedIndex))) {
+			if (pile4.isEmpty() && userDeck.get(cardSelectedIndex).toString().toLowerCase().charAt(0) != 'k') {
+				moveCardHelper(pile4, userDeck.get(cardSelectedIndex));
+				userDeck.remove(cardSelectedIndex);
+			} else if (check(pile4, userDeck.get(cardSelectedIndex))) {
 				// pile4.add(userDeck.get(cardSelectedIndex));
 				moveCardHelper(pile4, userDeck.get(cardSelectedIndex));
 				userDeck.remove(cardSelectedIndex);

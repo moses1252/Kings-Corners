@@ -3,6 +3,10 @@ a game of kings corners implemented with java using Object Oriented Programming,
 
 --log
 
+--2-8-23
+Game is functional
+game is 95% functional. if both players enter valid input, the application will be a successful. Needs to be debugged more
+
 --2-8-2023
 90% functional
 Player can now place a card in an empty pile, and a king can be put down in an empty king pile. The player can also move piles if the move is valid. Still needs to be debugged

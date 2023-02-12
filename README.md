@@ -3,6 +3,15 @@ a game of kings corners implemented with java using Object Oriented Programming,
 
 --log
 
+--2-9-23
+Debugging
+Current Known Issues:
+Any card can be place in King pile, ONLY kings should be place in the king pile
+Get an java.lang.NumberFormatException when not typing a number when user needs to choose a pile to put card down
+get an java.util.InputMismatchException when user does not enter number when trying to move piles
+Player can move a king to a normal pile: kings should only be placed in the kings corner pile
+
+
 --2-8-23
 Game is functional
 game is 95% functional. if both players enter valid input, the application will be a successful. Needs to be debugged more

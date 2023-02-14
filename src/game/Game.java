@@ -21,9 +21,9 @@ public class Game {
 	private static ArrayList<Card> user1Deck = new ArrayList<>();
 	private static ArrayList<Card> user2Deck = new ArrayList<>();
 
-	public static void main(String[] args) {
-		deck.shuffle();
-		
+
+	// set up game
+	public static void game() {
 		// start game simulation
 		System.out.println("Welcome to my program Kings Corner!!!");
 		System.out.println("This is a two player game, and there can only be 1 winner.");
@@ -49,12 +49,7 @@ public class Game {
 		}
 		System.out.println("\nPlayer 1 will start the game!!");
 		System.out.println("--------------------------------------------------------------");
-
-		game();
-	}
-
-	// set up game
-	public static void game() {
+		
 		// shuffle deck
 		deck.shuffle();
 		// fill user's deck
@@ -78,11 +73,10 @@ public class Game {
 				System.out.println("--------------------------------------------------------------");
 				// player 1 turn
 				// show user deck
-				// show user piles
-				System.out.print("Player's 1 Deck: ");
-				printUserDeck(user1Deck);
 				System.out.println("\n---Current Piles---");
 				printTable();
+				System.out.print("Player's 1 Deck: ");
+				printUserDeck(user1Deck);
 
 				// draw a card from the pile at the beginning of each turn
 				user1Deck.add(deck.dealTopCard());
@@ -98,10 +92,10 @@ public class Game {
 				System.out.println("\nPlayer 2 turn!!");
 				System.out.println("--------------------------------------------------------------");
 				// user2 turn
-				System.out.print("Player's 2 Deck: ");
-				printUserDeck(user2Deck);
 				System.out.println("\n---Current Piles---");
 				printTable();
+				System.out.print("Player's 2 Deck: ");
+				printUserDeck(user2Deck);
 
 				// draw a card from the pile at the beginning of each turn
 				user2Deck.add(deck.dealTopCard());
@@ -151,7 +145,8 @@ public class Game {
 
 		Scanner input = new Scanner(System.in);
 		String cardSelected = ""; // get card choice from user
-		int pileSelected = 0; // get pile choice from user
+		String pileSelected = ""; // get pile choice from user
+		int pileSelectedNum = -1;
 
 		// have user choose card they want to place
 		// make sure user input is valid for pile selection
@@ -164,7 +159,7 @@ public class Game {
 			cardSelected = input.nextLine();
 			System.out.println();
 
-			if ((cardSelected.charAt(0) - 'a') < userDeck.size()) {
+			if ((cardSelected.charAt(0) - 'a') < userDeck.size() && checkCard(cardSelected)) {
 				choice1 = false;
 			} else {
 				System.out.println("Error: Enter a valid Letter!!\n" + "Choose a card from the deck shown below\n");
@@ -179,19 +174,29 @@ public class Game {
 
 			// give user option of what pile they want to place card on
 			System.out.print("Choose the pile. Enter a number between 1-8: ");
-			pileSelected = input.nextInt();
+			pileSelected = input.nextLine();
+			
+			System.out.println();
 
-			// make sure user puts a valid answer
-			if (pileSelected >= 1 && pileSelected < 8) {
-				choice2 = false;
+			if (checkPile(pileSelected)) {
+				pileSelectedNum = Integer.parseInt(pileSelected);
+
+				// make sure user puts a valid answer
+				if (pileSelectedNum >= 1 && pileSelectedNum < 8) {
+					choice2 = false;
+				} else {
+					System.out.println("Error: Enter a valid number!!!");
+				}
 			} else {
 				System.out.println("Error: Enter a valid number!!!");
 			}
+			
+
 
 		}
 
 		// check if card placement is valid
-		moveCard(userDeck, cardSelected, pileSelected);
+		moveCard(userDeck, cardSelected, pileSelectedNum);
 		System.out.println("\n---Current Piles---");
 		printTable();
 	}
@@ -299,11 +304,21 @@ public class Game {
 		}
 		return -1;
 	}
+	
+	public static boolean checkCard(String cardSelected) {
+		if (cardSelected.charAt(0) -'a' >= 0 && cardSelected.charAt(0) - 'z' < 26) return true;		
+		return false;
+	}
+	
+	private static boolean checkPile(String pileSelected) {
+		if (pileSelected.charAt(0) - '0' >= 0 && pileSelected.charAt(0) - '0' <= 8) return true;		
+		return false;
+	}
 
 	// check if the card placement is valid
 	// place card to pile
 	// e.g queen can only be placed on top of a king
-	private static boolean check(ArrayList<Card> pile, Card card) {
+	public static boolean check(ArrayList<Card> pile, Card card) {
 		// String[] deckOrder = {"ace", "2", "3", "4", "5", "6", "7", "8", "9", "10",
 		// "jack", "queen", "king"};
 		HashMap<Character, Integer> deckOrder = new HashMap<>();
@@ -376,9 +391,6 @@ public class Game {
 	}
 
 	// merge a pile to another if the requirements are met
-	// TODO: .clear will not work because it will also clear it for pile1
-	// check if card placement is valid
-	//mergePile(pile1, pile2, pickUpPile, recievingPile);
 	public static void mergePile(int pickUp, int receiving, ArrayList<Card> pile1, ArrayList<Card> pile2) {
 		//need to check when moving a pile into an empty array
 		pile1 = getPile(pickUp);
@@ -427,7 +439,7 @@ public class Game {
 	private static void userOptions() {
 		// System.out.println();
 		// printPiles();
-		System.out.println("\nWhat would you like to do?");
+		System.out.println("\n\nWhat would you like to do?");
 		System.out.println("a)\tPlace a card\nb)\tMove a pile\nc)\tEnd Turn");
 		System.out.println("\nYour Choice: ");
 	}
@@ -631,32 +643,3 @@ public class Game {
 		}
 	}
 }
-
-////methods not needed
-//private static ArrayList<Card> returnPile(int pile) {
-//	ArrayList<Card> thisPile;
-//	if (pile == 1) {
-//		thisPile = (ArrayList<Card>) pile1.clone();
-//		return thisPile;
-//	} else if (pile == 2) {
-//		thisPile = (ArrayList<Card>) pile2.clone();
-//		return thisPile;
-//	} else if (pile == 3) {
-//		thisPile = (ArrayList<Card>) pile3.clone();
-//		return thisPile;
-//	} else if (pile == 4) {
-//		thisPile = (ArrayList<Card>) pile4.clone();
-//		return thisPile;
-//	} else if (pile == 5) {
-//		thisPile = (ArrayList<Card>) kingCorner1.clone();
-//		return thisPile;
-//	} else if (pile == 6) {
-//		thisPile = (ArrayList<Card>) kingCorner2.clone();
-//		return thisPile;
-//	} else if (pile == 7) {
-//		thisPile = (ArrayList<Card>) kingCorner3.clone();
-//		return thisPile;
-//	}
-//	thisPile = (ArrayList<Card>) kingCorner4.clone();
-//	return thisPile;
-//}

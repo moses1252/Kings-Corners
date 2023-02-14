@@ -58,7 +58,6 @@ class cardTester {
 		Card card4 = deck.dealTopCard(); //5 of hearts
 		Card card5 = deck.dealTopCard(); //6 of hearts
 		Card card6 = deck.dealTopCard(); //7 of hearts
-		//System.out.println(card1);
 		
 		ArrayList<Card> pile1 = new ArrayList<>();
 		
@@ -67,16 +66,15 @@ class cardTester {
 		pile1.add(deck.dealTopCard()); //10 of hearts
 		pile1.add(deck.dealTopCard()); //J of hearts
 
-		//Card card7 = deck.dealTopCard(); //10 of hearts
 
-		for (int i = 0; i < 12; i++) {//Q, K, A, 2, 3, 4, 5, 6, 7, 8, 9, 10
-			card5 = deck.dealTopCard();
+		for (int i = 0; i < 10; i++) {//Q, K, A, 2, 3, 4, 5, 6, 7, 8
+			pile1.add(deck.dealTopCard());
 		}
 		
 		Game game = new Game();
-		//pile1: 6, 7, 8, 9, 10, J, Q, K, A, 2, 3, 4, 5, 6, 7, 8  ---> next card needs to be 7 for game to return true
-		//card4: 10
-		boolean test2 =  game.check(pile1, card5);
+		//pile1: 8, 9, 10, J, Q, K, A, 2, 3, 4, 5, 6, 7, 8  ---> next card needs to be 7 for game to return true
+		//card6: 7
+		boolean test2 =  game.check(pile1, card6);
 		
 		assertEquals(test2, true);
 	}
@@ -127,6 +125,13 @@ class cardTester {
 		
 		assertEquals(test2, true);
 	}
+	
+//	@Test
+//	void testGame() {
+//		Game playGame = new Game();
+//		
+//		playGame.game();
+//	}
 
 
 }

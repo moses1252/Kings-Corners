@@ -3,6 +3,16 @@ a game of kings corners implemented with java using Object Oriented Programming,
 
 --log
 
+--2-13-23
+Game is functional
+Added a PlayGame class so the user just needs to run this class and start using application
+Bugs fixed: when user puts wrong input for any question, the application will not crash anymore. Solved mutiple bugs
+
+Debugging
+Found more issues:
+Sometimes the program wont add a card to the players deck, this can possibly prevent the player from making any moves
+when the deck runs out of cards, it will start adding null to the players hand, which will prevent the player from winning
+
 --2-9-23
 Debugging
 Current Known Issues:

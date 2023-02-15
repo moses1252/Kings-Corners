@@ -3,6 +3,9 @@ a game of kings corners implemented with java using Object Oriented Programming,
 
 --log
 
+--2-14-23
+Updated the visuals commands so who ever is playing can read better
+
 --2-13-23
 Game is functional
 Added a PlayGame class so the user just needs to run this class and start using application

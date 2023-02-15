@@ -5,6 +5,9 @@ Read rules HERE https://bicyclecards.com/how-to-play/kings-corner
 How to run the application???
 Watch me: https://youtu.be/AaBIgYNjhEs
 
+It may seem a little confusing trying to play this kings corner in the form of a java application so I created a video on how to play.
+Watch me: https://youtu.be/mHaIsy8vHns
+
 --log
 
 --2-14-23

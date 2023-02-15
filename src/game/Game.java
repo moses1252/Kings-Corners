@@ -34,7 +34,7 @@ public class Game {
 		System.out.println("The game will end when a player wins");
 		System.out.print("Press 1 and press Enter to start game: ");
 
-		
+		//get user input
 		Scanner rules = new Scanner(System.in);
 		String understand;
 
@@ -55,6 +55,7 @@ public class Game {
 		
 		// shuffle deck
 		deck.shuffle();
+		
 		// fill user's deck
 		initiateDeck(deck, user1Deck);
 		initiateDeck(deck, user2Deck);
@@ -73,12 +74,11 @@ public class Game {
 			} else {
 				System.out.println("\nPlayer 1 turn!!");
 				System.out.println("--------------------------------------------------------------");
-				// player 1 turn
+
 				// show user deck
 				System.out.println("\n---Current Piles---");
 				printTable();
 				System.out.print("\nPlayer's 1 Deck: ");
-				//printUserDeck(user1Deck);
 
 				// draw a card from the pile at the beginning of each turn
 				user1Deck.add(deck.dealTopCard());
@@ -110,19 +110,16 @@ public class Game {
 	}
 
 	// player turn
+	// they should have three options
+	// a. Place a card down
+	// b. Move a pile to another pile
+	// c. End turn
 	private static void playerTurn(ArrayList<Card> userDeck) {
-		// they should have three options
-		// menu1:
-		// a. Place a card down
-		// b. Move a pile to another pile
-		// c. End turn
-
 		boolean playerTurn = true;
 
 		// players turn should only end when player decides too!!
 		while (playerTurn) {
 			// prompt choice for user and store answer
-			
 			char choice = action(userDeck);
 
 			switch (choice) {
@@ -136,16 +133,15 @@ public class Game {
 				playerTurn = false;
 				break;
 			}
-
 		}
 	}
 
 	// allow user to place card down on any 4 piles if move is valid
+	// two options
+	// 1. player can move a card to standard pile
+	// 2. player can move a king into the corner
 	private static void placeCardInDeck(ArrayList<Card> userDeck) {
-		// two options
-		// 1. player can move a card to standard pile
-		// 2. player can move a king into the corner
-
+		// get user input
 		Scanner input = new Scanner(System.in);
 		String cardSelected = ""; // get card choice from user
 		String pileSelected = ""; // get pile choice from user
@@ -155,10 +151,10 @@ public class Game {
 		// make sure user input is valid for pile selection
 		boolean choice1 = true;
 		while (choice1) {
+			
 			// prompt user their card options to pick from
 			printOptions(userDeck);
 			
-
 			System.out.print("Choose your card. Enter a, b, or any options available:");
 			cardSelected = input.nextLine();
 			System.out.println();
@@ -202,25 +198,14 @@ public class Game {
 		printTable();
 	}
 	
-	// allow user to move piles if valid
+	// have player choose two piles
+	// first pile should be the card the user wants to move
+	// then second pile is where pile 1 is being place on
 	private static void movePile() {
-		// 1 option
-		//have player choose two piles
-		//first pile should be the card the user wants to move
-		//then second pile is where pile 1 is being place on
-		//example
-		//pile1: 7, 6, ___
-		//pile2: 5, 4, 3, 2, ace
-		
-		//pile 1 then pile2
-		//pile1: 7, 6, 5, 4, 3, 2, ace
-		//pile2: ___
-
 		Scanner input = new Scanner(System.in);
 		int pile1 = 0; // get pile choice from user
 		int pile2 = 0; // get pile choice from user
 
-		// have user choose card they want to place
 		// make sure user input is valid for pile selection
 		boolean choice1 = true;
 		while (choice1) {
@@ -274,13 +259,11 @@ public class Game {
 		userOptions(userDeck);
 
 		// make sure user puts correct value
-		// use a while loop to ensure the program continues running
 		boolean choice = true;
 		while (choice) {
 			System.out.print("Enter a, b, c for your choice: ");
 			user = input.nextLine();
 
-			// make sure user puts a valid answer
 			if (user.compareToIgnoreCase("a") == 0 || user.compareToIgnoreCase("b") == 0
 					|| user.compareToIgnoreCase("c") == 0) {
 				choice = false;
@@ -288,6 +271,7 @@ public class Game {
 				System.out.println("Error: Enter a, b, or c!!");
 			}
 		}
+		
 		// return user choice
 		return user.charAt(0);
 	}
@@ -305,18 +289,19 @@ public class Game {
 		return -1;
 	}
 	
+	//make sure user chooses valid card from deck
 	private static boolean checkCard(String cardSelected) {
 		if (cardSelected.charAt(0) -'a' >= 0 && cardSelected.charAt(0) - 'z' < 26) return true;		
 		return false;
 	}
 	
+	//make sure user chooses valid pile
 	private static boolean checkPile(String pileSelected) {
 		if (pileSelected.charAt(0) - '0' >= 0 && pileSelected.charAt(0) - '0' <= 8) return true;		
 		return false;
 	}
 
 	// check if the card placement is valid
-	// place card to pile
 	// e.g queen can only be placed on top of a king
 	private static boolean check(ArrayList<Card> pile, Card card) {
 		// String[] deckOrder = {"ace", "2", "3", "4", "5", "6", "7", "8", "9", "10",
@@ -344,43 +329,32 @@ public class Game {
 
 		// get card
 		int cardValue = deckOrder.get(card.toString().toLowerCase().charAt(0));
-		// System.out.println("game class method cardValue: " + cardValue);
 
 		// if valid return true
 		if (cardValue + 1 == pileCardValue) {
-			// pile.add(card);
 			return true;
 		}
 		return false;
 	}
 
+	//initiate the players deck with 7 cards
+	//this should only be called once
 	private static void initiateDeck(DeckOfCards deck, ArrayList<Card> userDeck) {
 		for (int i = 0; i < 7; i++) {
 			userDeck.add(deck.dealTopCard());
 		}
 	}
 
+	//initiate the 4 piles
+	//this should only be called once
 	private static void initiatePiles() {
 		pile1.add(deck.dealTopCard());
 		pile2.add(deck.dealTopCard());
 		pile3.add(deck.dealTopCard());
 		pile4.add(deck.dealTopCard());
 	}
-
-	private static void printPiles() {
-		// print Piles
-		System.out.println("\n---------------Current Piles---------------");
-		System.out.println("Pile #" + 1 + ": " + print(pile1));
-		System.out.println("Pile #" + 2 + ": " + print(pile2));
-		System.out.println("Pile #" + 3 + ": " + print(pile3));
-		System.out.println("Pile #" + 4 + ": " + print(pile4));
-		System.out.println("---------------Current Kings Corners---------------");
-		System.out.println("Pile #" + 5 + ": " + print(kingCorner1));
-		System.out.println("Pile #" + 6 + ": " + print(kingCorner2));
-		System.out.println("Pile #" + 7 + ": " + print(kingCorner3));
-		System.out.println("Pile #" + 8 + ": " + print(kingCorner4));
-	}
-
+	
+	//make sure a king is being placed in a king corner pile
 	private static void kingCorner(ArrayList<Card> pile, Card card) {
 		if (pile.isEmpty() && card.getFaceName().charAt(0) == 'k')
 			pile.add(card);
@@ -427,61 +401,7 @@ public class Game {
 			}
 		}
 	}
-
-	/*
-	 * all methods below are for printing purposes
-	 */
-
-	// main user menu
-	// this should be shown to user when its their turn
-	private static void userOptions(ArrayList<Card> userDeck) {
-		//show user's deck
-		System.out.print("\nYour deck: ");
-		printUserDeck(userDeck);
-		System.out.println();
-		System.out.println("\n\nWhat would you like to do?");
-		System.out.println("a)\tPlace a card\nb)\tMove a pile\nc)\tEnd Turn");
-		System.out.println("\nYour Choice: ");
-	}
-
-	// print given pile
-	private static String print(ArrayList<Card> pile) {
-		String result = "";
-		for (Card card : pile) {
-			result += card + ", ";
-		}
-		return result += "___";
-	}
-
-	// print all piles
-	private static void printTable() {
-		System.out.println("Pile 1: " + print(pile1));
-		System.out.println("Pile 2: " + print(pile2));
-		System.out.println("Pile 3: " + print(pile3));
-		System.out.println("Pile 4: " + print(pile4));
-
-		System.out.println("King Corner 1: " + print(kingCorner1));
-		System.out.println("King Corner 2: " + print(kingCorner2));
-		System.out.println("King Corner 3: " + print(kingCorner3));
-		System.out.println("King Corner 4: " + print(kingCorner4));
-	}
-
-	// print options user can pick from their OWN pile
-	private static void printOptions(ArrayList<Card> pile) {
-		char a = 'a';
-		for (int i = 0; i < pile.size(); i++) {
-			System.out.println(a + ". " + pile.get(i));
-			a++;
-		}
-	}
-
-	// print the user deck
-	private static void printUserDeck(ArrayList<Card> deck) {
-		for (Card card : deck) {
-			System.out.print(card + ", ");
-		}
-	}
-
+	
 	// check if card can be place down
 	private static void moveCard(ArrayList<Card> userDeck, String cardSelected, int pileSelected) {
 		// card selected
@@ -640,6 +560,76 @@ public class Game {
 			kingCorner3.clear();
 		case 8: // pile 8
 			kingCorner4.clear();
+		}
+	}
+
+	
+	/*
+	 * all methods below are for printing purposes
+	 */
+	
+	//print current state of all the piles
+	private static void printPiles() {
+		// print Piles
+		System.out.println("\n---------------Current Piles---------------");
+		System.out.println("Pile #" + 1 + ": " + print(pile1));
+		System.out.println("Pile #" + 2 + ": " + print(pile2));
+		System.out.println("Pile #" + 3 + ": " + print(pile3));
+		System.out.println("Pile #" + 4 + ": " + print(pile4));
+		System.out.println("---------------Current Kings Corners---------------");
+		System.out.println("Pile #" + 5 + ": " + print(kingCorner1));
+		System.out.println("Pile #" + 6 + ": " + print(kingCorner2));
+		System.out.println("Pile #" + 7 + ": " + print(kingCorner3));
+		System.out.println("Pile #" + 8 + ": " + print(kingCorner4));
+	}
+
+	// main user menu
+	// this should be shown to user when its their turn
+	private static void userOptions(ArrayList<Card> userDeck) {
+		//show user's deck
+		System.out.print("\nYour deck: ");
+		printUserDeck(userDeck);
+		System.out.println();
+		System.out.println("\n\nWhat would you like to do?");
+		System.out.println("a)\tPlace a card\nb)\tMove a pile\nc)\tEnd Turn");
+		System.out.println("\nYour Choice: ");
+	}
+
+	// print given pile
+	private static String print(ArrayList<Card> pile) {
+		String result = "";
+		for (Card card : pile) {
+			result += card + ", ";
+		}
+		return result += "___";
+	}
+
+	// print all piles
+	private static void printTable() {
+		System.out.println("Pile 1: " + print(pile1));
+		System.out.println("Pile 2: " + print(pile2));
+		System.out.println("Pile 3: " + print(pile3));
+		System.out.println("Pile 4: " + print(pile4));
+
+		System.out.println("King Corner 1: " + print(kingCorner1));
+		System.out.println("King Corner 2: " + print(kingCorner2));
+		System.out.println("King Corner 3: " + print(kingCorner3));
+		System.out.println("King Corner 4: " + print(kingCorner4));
+	}
+
+	// print options user can pick from their OWN pile
+	private static void printOptions(ArrayList<Card> pile) {
+		char a = 'a';
+		for (int i = 0; i < pile.size(); i++) {
+			System.out.println(a + ". " + pile.get(i));
+			a++;
+		}
+	}
+
+	// print the user deck
+	private static void printUserDeck(ArrayList<Card> deck) {
+		for (Card card : deck) {
+			System.out.print(card + ", ");
 		}
 	}
 }

@@ -5,7 +5,6 @@ Read rules HERE https://bicyclecards.com/how-to-play/kings-corner
 --log
 
 --2-14-23
-
 Updated the visuals commands so who ever is playing can read better
 Cleaned up and removed unnecessary lines from Game class. Rearranged methods so it should be more readable for other developers
 

@@ -1,5 +1,6 @@
 # Kings-Corners
 a game of kings corners implemented with java using Object Oriented Programming, user input, and JUnit testing.
+Read rules HERE https://bicyclecards.com/how-to-play/kings-corner
 
 --log
 

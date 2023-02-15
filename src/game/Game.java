@@ -23,7 +23,7 @@ public class Game {
 
 
 	// set up game
-	public static void game() {
+	public void game() {
 		// start game simulation
 		System.out.println("Welcome to my program Kings Corner!!!");
 		System.out.println("This is a two player game, and there can only be 1 winner.");
@@ -34,6 +34,7 @@ public class Game {
 		System.out.println("The game will end when a player wins");
 		System.out.print("Press 1 and press Enter to start game: ");
 
+		
 		Scanner rules = new Scanner(System.in);
 		String understand;
 
@@ -47,6 +48,8 @@ public class Game {
 				System.out.print("Press 1 and press Enter to start game: ");
 			}
 		}
+		
+		
 		System.out.println("\nPlayer 1 will start the game!!");
 		System.out.println("--------------------------------------------------------------");
 		
@@ -62,7 +65,6 @@ public class Game {
 		// both players keep playing until game ends
 		boolean on = true;
 		while (on) {
-
 			// check if player2 deck is empty
 			// if true end game and print winner
 			if (user2Deck.isEmpty()) {
@@ -75,8 +77,8 @@ public class Game {
 				// show user deck
 				System.out.println("\n---Current Piles---");
 				printTable();
-				System.out.print("Player's 1 Deck: ");
-				printUserDeck(user1Deck);
+				System.out.print("\nPlayer's 1 Deck: ");
+				//printUserDeck(user1Deck);
 
 				// draw a card from the pile at the beginning of each turn
 				user1Deck.add(deck.dealTopCard());
@@ -95,7 +97,7 @@ public class Game {
 				System.out.println("\n---Current Piles---");
 				printTable();
 				System.out.print("Player's 2 Deck: ");
-				printUserDeck(user2Deck);
+				//printUserDeck(user2Deck);
 
 				// draw a card from the pile at the beginning of each turn
 				user2Deck.add(deck.dealTopCard());
@@ -108,7 +110,7 @@ public class Game {
 	}
 
 	// player turn
-	public static void playerTurn(ArrayList<Card> userDeck) {
+	private static void playerTurn(ArrayList<Card> userDeck) {
 		// they should have three options
 		// menu1:
 		// a. Place a card down
@@ -120,7 +122,8 @@ public class Game {
 		// players turn should only end when player decides too!!
 		while (playerTurn) {
 			// prompt choice for user and store answer
-			char choice = action();
+			
+			char choice = action(userDeck);
 
 			switch (choice) {
 			case 'a':
@@ -154,6 +157,7 @@ public class Game {
 		while (choice1) {
 			// prompt user their card options to pick from
 			printOptions(userDeck);
+			
 
 			System.out.print("Choose your card. Enter a, b, or any options available:");
 			cardSelected = input.nextLine();
@@ -190,9 +194,6 @@ public class Game {
 			} else {
 				System.out.println("Error: Enter a valid number!!!");
 			}
-			
-
-
 		}
 
 		// check if card placement is valid
@@ -202,7 +203,7 @@ public class Game {
 	}
 	
 	// allow user to move piles if valid
-	public static void movePile() {
+	private static void movePile() {
 		// 1 option
 		//have player choose two piles
 		//first pile should be the card the user wants to move
@@ -226,7 +227,7 @@ public class Game {
 			// print piles
 			printPiles();
 
-			System.out.print("Pick the pile you want to pick up: Enter any number from 1 - 8");
+			System.out.print("Pick the pile you want to pick up: Enter any number from 1 - 8: ");
 			pile1 = input.nextInt();
 			System.out.println();
 
@@ -243,7 +244,7 @@ public class Game {
 			// print piles
 			printPiles();
 
-			System.out.print("Where do you want to place down the pile? Enter any number from 1 - 8");
+			System.out.print("Where do you want to place down the pile? Enter any number from 1 - 8: ");
 			pile2 = input.nextInt();
 			System.out.println();
 
@@ -265,12 +266,12 @@ public class Game {
 	
 	// action player can do, place card, move a pile, or end turn
 	// should return 'a', 'b', or 'c'
-	public static char action() {
+	private static char action(ArrayList<Card> userDeck) {
 		Scanner input = new Scanner(System.in);
 		String user = "";
 
 		// prompt user the three options
-		userOptions();
+		userOptions(userDeck);
 
 		// make sure user puts correct value
 		// use a while loop to ensure the program continues running
@@ -287,13 +288,12 @@ public class Game {
 				System.out.println("Error: Enter a, b, or c!!");
 			}
 		}
-
 		// return user choice
 		return user.charAt(0);
 	}
 
 	// return the index of the card the user chose
-	public static int userChoice(String choice) {
+	private static int userChoice(String choice) {
 		char ans = 'a';
 
 		for (int i = 0; i < user1Deck.size(); i++) {
@@ -305,7 +305,7 @@ public class Game {
 		return -1;
 	}
 	
-	public static boolean checkCard(String cardSelected) {
+	private static boolean checkCard(String cardSelected) {
 		if (cardSelected.charAt(0) -'a' >= 0 && cardSelected.charAt(0) - 'z' < 26) return true;		
 		return false;
 	}
@@ -318,7 +318,7 @@ public class Game {
 	// check if the card placement is valid
 	// place card to pile
 	// e.g queen can only be placed on top of a king
-	public static boolean check(ArrayList<Card> pile, Card card) {
+	private static boolean check(ArrayList<Card> pile, Card card) {
 		// String[] deckOrder = {"ace", "2", "3", "4", "5", "6", "7", "8", "9", "10",
 		// "jack", "queen", "king"};
 		HashMap<Character, Integer> deckOrder = new HashMap<>();
@@ -335,8 +335,6 @@ public class Game {
 		deckOrder.put('j', 10);
 		deckOrder.put('q', 11);
 		deckOrder.put('k', 12);
-
-		// compare last card in pile to incoming card
 
 		// get pile size
 		int len = pile.size() - 1;
@@ -383,15 +381,15 @@ public class Game {
 		System.out.println("Pile #" + 8 + ": " + print(kingCorner4));
 	}
 
-	public static void kingCorner(ArrayList<Card> pile, Card card) {
-		if (pile.isEmpty() && card.getFaceName().charAt(0) == 'K')
+	private static void kingCorner(ArrayList<Card> pile, Card card) {
+		if (pile.isEmpty() && card.getFaceName().charAt(0) == 'k')
 			pile.add(card);
 		else
 			throw new IllegalArgumentException("You can only place a King!!");
 	}
 
 	// merge a pile to another if the requirements are met
-	public static void mergePile(int pickUp, int receiving, ArrayList<Card> pile1, ArrayList<Card> pile2) {
+	private static void mergePile(int pickUp, int receiving, ArrayList<Card> pile1, ArrayList<Card> pile2) {
 		//need to check when moving a pile into an empty array
 		pile1 = getPile(pickUp);
 		pile2 = getPile(receiving);
@@ -404,13 +402,13 @@ public class Game {
 			pile2.addAll(pile1);
 			pile1.clear();
 		} else {
-			throw new IllegalArgumentException("Cannot stack these two piles!\nThe " + pile2.get(0)
+			System.out.println("Cannot stack these two piles!\nThe " + pile2.get(0)
 					+ " cannot be placed on " + pile1.get(pile1.size() - 1));
 		}
 	}
 
 	// check if the game is over
-	public static boolean gameOver() {
+	private static boolean gameOver() {
 		if (user1Deck.isEmpty() || user2Deck.isEmpty() || deck.getDeck().isEmpty()) {
 			return true;
 		}
@@ -418,7 +416,7 @@ public class Game {
 	}
 
 	// print winner
-	public static void winner() {
+	private static void winner() {
 		if (gameOver()) {
 			if (user1Deck.isEmpty()) {
 				System.out.print("Player 1 is the Winner!!");
@@ -436,16 +434,18 @@ public class Game {
 
 	// main user menu
 	// this should be shown to user when its their turn
-	private static void userOptions() {
-		// System.out.println();
-		// printPiles();
+	private static void userOptions(ArrayList<Card> userDeck) {
+		//show user's deck
+		System.out.print("\nYour deck: ");
+		printUserDeck(userDeck);
+		System.out.println();
 		System.out.println("\n\nWhat would you like to do?");
 		System.out.println("a)\tPlace a card\nb)\tMove a pile\nc)\tEnd Turn");
 		System.out.println("\nYour Choice: ");
 	}
 
 	// print given pile
-	public static String print(ArrayList<Card> pile) {
+	private static String print(ArrayList<Card> pile) {
 		String result = "";
 		for (Card card : pile) {
 			result += card + ", ";
@@ -454,7 +454,7 @@ public class Game {
 	}
 
 	// print all piles
-	public static void printTable() {
+	private static void printTable() {
 		System.out.println("Pile 1: " + print(pile1));
 		System.out.println("Pile 2: " + print(pile2));
 		System.out.println("Pile 3: " + print(pile3));
@@ -467,7 +467,7 @@ public class Game {
 	}
 
 	// print options user can pick from their OWN pile
-	public static void printOptions(ArrayList<Card> pile) {
+	private static void printOptions(ArrayList<Card> pile) {
 		char a = 'a';
 		for (int i = 0; i < pile.size(); i++) {
 			System.out.println(a + ". " + pile.get(i));
@@ -476,14 +476,14 @@ public class Game {
 	}
 
 	// print the user deck
-	public static void printUserDeck(ArrayList<Card> deck) {
+	private static void printUserDeck(ArrayList<Card> deck) {
 		for (Card card : deck) {
 			System.out.print(card + ", ");
 		}
 	}
 
 	// check if card can be place down
-	public static void moveCard(ArrayList<Card> userDeck, String cardSelected, int pileSelected) {
+	private static void moveCard(ArrayList<Card> userDeck, String cardSelected, int pileSelected) {
 		// card selected
 		int cardSelectedIndex = userChoice(cardSelected);
 
@@ -598,11 +598,11 @@ public class Game {
 		}
 	}
 
-	public static void moveCardHelper(ArrayList<Card> pile, Card card) {
+	private static void moveCardHelper(ArrayList<Card> pile, Card card) {
 		pile.add(card);
 	}
 	
-	public static ArrayList<Card> getPile(int pileNum) {
+	private static ArrayList<Card> getPile(int pileNum) {
 		switch (pileNum) {
 		case 1: // pile 1
 			return pile1;
@@ -622,7 +622,7 @@ public class Game {
 		return kingCorner4;
 	}
 	
-	public static void emptyPile(int pileNum) {
+	private static void emptyPile(int pileNum) {
 		switch (pileNum) {
 		case 1: // pile 1
 			pile1.clear();

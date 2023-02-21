@@ -21,7 +21,6 @@ public class Game {
 	private static ArrayList<Card> user1Deck = new ArrayList<>();
 	private static ArrayList<Card> user2Deck = new ArrayList<>();
 
-
 	// set up game
 	public void game() {
 		// start game simulation
@@ -34,7 +33,7 @@ public class Game {
 		System.out.println("The game will end when a player wins");
 		System.out.print("Press 1 and press Enter to start game: ");
 
-		//get user input
+		// get user input
 		Scanner rules = new Scanner(System.in);
 		String understand;
 
@@ -48,14 +47,13 @@ public class Game {
 				System.out.print("Press 1 and press Enter to start game: ");
 			}
 		}
-		
-		
+
 		System.out.println("\nPlayer 1 will start the game!!");
 		System.out.println("--------------------------------------------------------------");
-		
+
 		// shuffle deck
 		deck.shuffle();
-		
+
 		// fill user's deck
 		initiateDeck(deck, user1Deck);
 		initiateDeck(deck, user2Deck);
@@ -97,7 +95,7 @@ public class Game {
 				System.out.println("\n---Current Piles---");
 				printTable();
 				System.out.print("Player's 2 Deck: ");
-				//printUserDeck(user2Deck);
+				// printUserDeck(user2Deck);
 
 				// draw a card from the pile at the beginning of each turn
 				user2Deck.add(deck.dealTopCard());
@@ -151,10 +149,10 @@ public class Game {
 		// make sure user input is valid for pile selection
 		boolean choice1 = true;
 		while (choice1) {
-			
+
 			// prompt user their card options to pick from
 			printOptions(userDeck);
-			
+
 			System.out.print("Choose your card. Enter a, b, or any options available:");
 			cardSelected = input.nextLine();
 			System.out.println();
@@ -175,7 +173,7 @@ public class Game {
 			// give user option of what pile they want to place card on
 			System.out.print("Choose the pile. Enter a number between 1-8: ");
 			pileSelected = input.nextLine();
-			
+
 			System.out.println();
 
 			if (checkPile(pileSelected)) {
@@ -197,7 +195,7 @@ public class Game {
 		System.out.println("\n---Current Piles---");
 		printTable();
 	}
-	
+
 	// have player choose two piles
 	// first pile should be the card the user wants to move
 	// then second pile is where pile 1 is being place on
@@ -239,16 +237,16 @@ public class Game {
 				System.out.println("Error: Enter a valid Letter!!\n" + "Choose a card from the deck shown below\n");
 			}
 		}
-		
+
 		ArrayList<Card> pickUpPile = new ArrayList<>();
 		ArrayList<Card> recievingPile = new ArrayList<>();
-		
+
 		// check if card placement is valid
 		mergePile(pile1, pile2, pickUpPile, recievingPile);
 		System.out.println("\n---Current Piles---");
 		printTable();
 	}
-	
+
 	// action player can do, place card, move a pile, or end turn
 	// should return 'a', 'b', or 'c'
 	private static char action(ArrayList<Card> userDeck) {
@@ -271,7 +269,7 @@ public class Game {
 				System.out.println("Error: Enter a, b, or c!!");
 			}
 		}
-		
+
 		// return user choice
 		return user.charAt(0);
 	}
@@ -288,16 +286,18 @@ public class Game {
 		}
 		return -1;
 	}
-	
-	//make sure user chooses valid card from deck
+
+	// make sure user chooses valid card from deck
 	private static boolean checkCard(String cardSelected) {
-		if (cardSelected.charAt(0) -'a' >= 0 && cardSelected.charAt(0) - 'z' < 26) return true;		
+		if (cardSelected.charAt(0) - 'a' >= 0 && cardSelected.charAt(0) - 'z' < 26)
+			return true;
 		return false;
 	}
-	
-	//make sure user chooses valid pile
+
+	// make sure user chooses valid pile
 	private static boolean checkPile(String pileSelected) {
-		if (pileSelected.charAt(0) - '0' >= 0 && pileSelected.charAt(0) - '0' <= 8) return true;		
+		if (pileSelected.charAt(0) - '0' >= 0 && pileSelected.charAt(0) - '0' <= 8)
+			return true;
 		return false;
 	}
 
@@ -321,8 +321,12 @@ public class Game {
 		deckOrder.put('q', 11);
 		deckOrder.put('k', 12);
 
+		int len = 0;
+
 		// get pile size
-		int len = pile.size() - 1;
+		if (pile.size() > 0) {
+			len = pile.size() - 1;
+		}
 
 		// get last card
 		int pileCardValue = deckOrder.get(pile.get(len).toString().toLowerCase().charAt(0));
@@ -337,48 +341,69 @@ public class Game {
 		return false;
 	}
 
-	//initiate the players deck with 7 cards
-	//this should only be called once
+	// initiate the players deck with 7 cards
+	// this should only be called once
 	private static void initiateDeck(DeckOfCards deck, ArrayList<Card> userDeck) {
 		for (int i = 0; i < 7; i++) {
 			userDeck.add(deck.dealTopCard());
 		}
 	}
 
-	//initiate the 4 piles
-	//this should only be called once
+	// initiate the 4 piles
+	// this should only be called once
 	private static void initiatePiles() {
 		pile1.add(deck.dealTopCard());
 		pile2.add(deck.dealTopCard());
 		pile3.add(deck.dealTopCard());
 		pile4.add(deck.dealTopCard());
 	}
-	
-	//make sure a king is being placed in a king corner pile
-	private static void kingCorner(ArrayList<Card> pile, Card card) {
+
+	// make sure a king is being placed in a king corner pile
+	private static boolean kingCorner(ArrayList<Card> pile, Card card) {
 		if (pile.isEmpty() && card.getFaceName().charAt(0) == 'k')
-			pile.add(card);
-		else
-			throw new IllegalArgumentException("You can only place a King!!");
+			return true;
+		return false;
 	}
 
 	// merge a pile to another if the requirements are met
 	private static void mergePile(int pickUp, int receiving, ArrayList<Card> pile1, ArrayList<Card> pile2) {
-		//need to check when moving a pile into an empty array
+		// need to check when moving a pile into an empty array
 		pile1 = getPile(pickUp);
 		pile2 = getPile(receiving);
-		
-		//if the pile is empty
-		if (pile2.isEmpty()) {
+
+		// check if card is being placed on a kings corner
+		// if so make sure its a king
+		if (pile2.isEmpty() && receiving > 4 && kingCorner(pile2, pile1.get(0))) {
 			pile2.addAll(pile1);
 			pile1.clear();
-		} else if (check(pile2, pile1.get(0))) {
+		} // check if pile is being merged to an empty pile, and it should be a normal
+			// pile
+		else if (pile2.isEmpty() && receiving < 5) {
+			pile2.addAll(pile1);
+			pile1.clear();
+		} // check if pile is being placed on other pile, and it should be a normal pile
+		else if (receiving < 5 && pickUp < 5 && check(pile2, pile1.get(0))) {
 			pile2.addAll(pile1);
 			pile1.clear();
 		} else {
-			System.out.println("Cannot stack these two piles!\nThe " + pile2.get(0)
-					+ " cannot be placed on " + pile1.get(pile1.size() - 1));
+			System.out.println("Cannot stack these two piles!!!");
 		}
+
+//		
+//		if (pile2.isEmpty() && receiving < 5) {
+//			pile2 = new ArrayList<Card>(pile1);
+//			pile1.clear();
+//		} else if (receiving > 4 && kingCorner(pile2, pile1.get(0))) {//if the pile is empty and card being placed in a king order must a king
+//			pile2.addAll(pile1);
+//			pile1.clear();
+//		}
+//		else if (receiving < 5 &&check(pile2, pile1.get(0))) {
+//			pile2.addAll(pile1);
+//			pile1.clear();
+//		} else {
+//			System.out.println("Cannot stack these two piles!\nThe " + pile2.get(0)
+//					+ " cannot be placed on " + pile1.get(pile1.size() - 1));
+//		}
 	}
 
 	// check if the game is over
@@ -397,131 +422,135 @@ public class Game {
 			} else if (user2Deck.isEmpty()) {
 				System.out.print("Player 2 is the Winner!!");
 			} else {
-				
+
 			}
 		}
 	}
-	
+
 	// check if card can be place down
 	private static void moveCard(ArrayList<Card> userDeck, String cardSelected, int pileSelected) {
 		// card selected
 		int cardSelectedIndex = userChoice(cardSelected);
 
-		switch (pileSelected) {
-		case 1: // pile 1
-			// check if card can be placed
-			if (pile1.isEmpty() && userDeck.get(cardSelectedIndex).toString().toLowerCase().charAt(0) != 'k') {
-				moveCardHelper(pile1, userDeck.get(cardSelectedIndex));
-				userDeck.remove(cardSelectedIndex);
-			} else if (check(pile1, userDeck.get(cardSelectedIndex))) {
-				// pile1.add(userDeck.get(cardSelectedIndex));
-				moveCardHelper(pile1, userDeck.get(cardSelectedIndex));
-				userDeck.remove(cardSelectedIndex);
-			} else {
-				System.out.println("Invalid Move: try another card\n");
-			}
-			break;
-		case 2: // pile 2
-			if (pile2.isEmpty() && userDeck.get(cardSelectedIndex).toString().toLowerCase().charAt(0) != 'k') {
-				moveCardHelper(pile2, userDeck.get(cardSelectedIndex));
-				userDeck.remove(cardSelectedIndex);
-			} else if (check(pile2, userDeck.get(cardSelectedIndex))) {
-				// pile2.add(userDeck.get(cardSelectedIndex));
-				moveCardHelper(pile2, userDeck.get(cardSelectedIndex));
-				userDeck.remove(cardSelectedIndex);
-			} else {
-				System.out.println("Invalid Move: try another card\n");
-			}
-			break;
-		case 3: // pile 3
-			if (pile3.isEmpty() && userDeck.get(cardSelectedIndex).toString().toLowerCase().charAt(0) != 'k') {
-				moveCardHelper(pile3, userDeck.get(cardSelectedIndex));
-				userDeck.remove(cardSelectedIndex);
-			} else if (check(pile3, userDeck.get(cardSelectedIndex))) {
-				// pile3.add(userDeck.get(cardSelectedIndex));
-				moveCardHelper(pile3, userDeck.get(cardSelectedIndex));
-				userDeck.remove(cardSelectedIndex);
-			} else {
-				System.out.println("Invalid Move: try another card\n");
-			}
-			break;
-		case 4: // pile 4
-			// check if card can be placed
-			if (pile4.isEmpty() && userDeck.get(cardSelectedIndex).toString().toLowerCase().charAt(0) != 'k') {
-				moveCardHelper(pile4, userDeck.get(cardSelectedIndex));
-				userDeck.remove(cardSelectedIndex);
-			} else if (check(pile4, userDeck.get(cardSelectedIndex))) {
-				// pile4.add(userDeck.get(cardSelectedIndex));
-				moveCardHelper(pile4, userDeck.get(cardSelectedIndex));
-				userDeck.remove(cardSelectedIndex);
-			} else {
-				System.out.println("Invalid Move: try another card\n");
-			}
-			break;
-		case 5: // pile 5
-			// check if card can be placed
-			// if empty it needs to be a king
-			// if not add card as normal
-			if (kingCorner1.isEmpty()) {
-				if (userDeck.get(cardSelectedIndex).toString().toLowerCase().charAt(0) == 'k') {
+		if (pileSelected < 5 && userDeck.get(cardSelectedIndex).toString().toLowerCase().charAt(0) != 'k') {
+			switch (pileSelected) {
+			case 1: // pile 1
+				// check if card can be placed
+				if (pile1.isEmpty() && userDeck.get(cardSelectedIndex).toString().toLowerCase().charAt(0) != 'k') {
+					moveCardHelper(pile1, userDeck.get(cardSelectedIndex));
+					userDeck.remove(cardSelectedIndex);
+				} else if (check(pile1, userDeck.get(cardSelectedIndex))) {
+					// pile1.add(userDeck.get(cardSelectedIndex));
+					moveCardHelper(pile1, userDeck.get(cardSelectedIndex));
+					userDeck.remove(cardSelectedIndex);
+				} else {
+					System.out.println("Invalid Move: try another card\n");
+				}
+				break;
+			case 2: // pile 2
+				if (pile2.isEmpty() && userDeck.get(cardSelectedIndex).toString().toLowerCase().charAt(0) != 'k') {
+					moveCardHelper(pile2, userDeck.get(cardSelectedIndex));
+					userDeck.remove(cardSelectedIndex);
+				} else if (check(pile2, userDeck.get(cardSelectedIndex))) {
+					// pile2.add(userDeck.get(cardSelectedIndex));
+					moveCardHelper(pile2, userDeck.get(cardSelectedIndex));
+					userDeck.remove(cardSelectedIndex);
+				} else {
+					System.out.println("Invalid Move: try another card\n");
+				}
+				break;
+			case 3: // pile 3
+				if (pile3.isEmpty() && userDeck.get(cardSelectedIndex).toString().toLowerCase().charAt(0) != 'k') {
+					moveCardHelper(pile3, userDeck.get(cardSelectedIndex));
+					userDeck.remove(cardSelectedIndex);
+				} else if (check(pile3, userDeck.get(cardSelectedIndex))) {
+					// pile3.add(userDeck.get(cardSelectedIndex));
+					moveCardHelper(pile3, userDeck.get(cardSelectedIndex));
+					userDeck.remove(cardSelectedIndex);
+				} else {
+					System.out.println("Invalid Move: try another card\n");
+				}
+				break;
+			case 4: // pile 4
+				// check if card can be placed
+				if (pile4.isEmpty() && userDeck.get(cardSelectedIndex).toString().toLowerCase().charAt(0) != 'k') {
+					moveCardHelper(pile4, userDeck.get(cardSelectedIndex));
+					userDeck.remove(cardSelectedIndex);
+				} else if (check(pile4, userDeck.get(cardSelectedIndex))) {
+					// pile4.add(userDeck.get(cardSelectedIndex));
+					moveCardHelper(pile4, userDeck.get(cardSelectedIndex));
+					userDeck.remove(cardSelectedIndex);
+				} else {
+					System.out.println("Invalid Move: try another card\n");
+				}
+				break;
+			case 5: // pile 5
+				// check if card can be placed
+				// if empty it needs to be a king
+				// if not add card as normal
+				if (kingCorner1.isEmpty()) {
+					if (userDeck.get(cardSelectedIndex).toString().toLowerCase().charAt(0) == 'k') {
+						kingCorner1.add(userDeck.get(cardSelectedIndex));
+						userDeck.remove(cardSelectedIndex);
+					}
+				} else if (check(kingCorner1, userDeck.get(cardSelectedIndex))) {
 					kingCorner1.add(userDeck.get(cardSelectedIndex));
 					userDeck.remove(cardSelectedIndex);
+				} else {
+					System.out.println("Invalid Move: try another card\n");
 				}
-			} else if (check(kingCorner1, userDeck.get(cardSelectedIndex))) {
-				kingCorner1.add(userDeck.get(cardSelectedIndex));
-				userDeck.remove(cardSelectedIndex);
-			} else {
-				System.out.println("Invalid Move: try another card\n");
-			}
-			break;
-		case 6: // pile 6
-			if (kingCorner2.isEmpty()) {
-				if (userDeck.get(cardSelectedIndex).toString().toLowerCase().charAt(0) == 'k') {
+				break;
+			case 6: // pile 6
+				if (kingCorner2.isEmpty()) {
+					if (userDeck.get(cardSelectedIndex).toString().toLowerCase().charAt(0) == 'k') {
+						kingCorner2.add(userDeck.get(cardSelectedIndex));
+						userDeck.remove(cardSelectedIndex);
+					}
+				} else if (check(kingCorner2, userDeck.get(cardSelectedIndex))) {
 					kingCorner2.add(userDeck.get(cardSelectedIndex));
 					userDeck.remove(cardSelectedIndex);
+				} else {
+					System.out.println("Invalid Move: try another card\n");
 				}
-			} else if (check(kingCorner2, userDeck.get(cardSelectedIndex))) {
-				kingCorner2.add(userDeck.get(cardSelectedIndex));
-				userDeck.remove(cardSelectedIndex);
-			} else {
-				System.out.println("Invalid Move: try another card\n");
-			}
-			break;
-		case 7: // pile 7
-			// check if card can be placed
-			if (kingCorner3.isEmpty()) {
-				if (userDeck.get(cardSelectedIndex).toString().toLowerCase().charAt(0) == 'k') {
+				break;
+			case 7: // pile 7
+				// check if card can be placed
+				if (kingCorner3.isEmpty()) {
+					if (userDeck.get(cardSelectedIndex).toString().toLowerCase().charAt(0) == 'k') {
+						kingCorner3.add(userDeck.get(cardSelectedIndex));
+						userDeck.remove(cardSelectedIndex);
+					}
+				} else if (check(kingCorner3, userDeck.get(cardSelectedIndex))) {
 					kingCorner3.add(userDeck.get(cardSelectedIndex));
 					userDeck.remove(cardSelectedIndex);
+				} else {
+					System.out.println("Invalid Move: try another card\n");
 				}
-			} else if (check(kingCorner3, userDeck.get(cardSelectedIndex))) {
-				kingCorner3.add(userDeck.get(cardSelectedIndex));
-				userDeck.remove(cardSelectedIndex);
-			} else {
-				System.out.println("Invalid Move: try another card\n");
-			}
-			break;
-		case 8: // pile 8
-			// check if card can be placed
-			if (kingCorner4.isEmpty()) {
-				if (userDeck.get(cardSelectedIndex).toString().toLowerCase().charAt(0) == 'k') {
+				break;
+			case 8: // pile 8
+				// check if card can be placed
+				if (kingCorner4.isEmpty()) {
+					if (userDeck.get(cardSelectedIndex).toString().toLowerCase().charAt(0) == 'k') {
+						kingCorner4.add(userDeck.get(cardSelectedIndex));
+						userDeck.remove(cardSelectedIndex);
+					}
+				} else if (check(kingCorner4, userDeck.get(cardSelectedIndex))) {
 					kingCorner4.add(userDeck.get(cardSelectedIndex));
 					userDeck.remove(cardSelectedIndex);
+				} else {
+					System.out.println("Invalid Move: try another card\n");
 				}
-			} else if (check(kingCorner4, userDeck.get(cardSelectedIndex))) {
-				kingCorner4.add(userDeck.get(cardSelectedIndex));
-				userDeck.remove(cardSelectedIndex);
-			} else {
-				System.out.println("Invalid Move: try another card\n");
+				break;
 			}
-			break;
+		} else {
+			System.out.println("Cannot place a King in a normal pile!!!");
 		}
 	}
 
 	private static void moveCardHelper(ArrayList<Card> pile, Card card) {
 		pile.add(card);
 	}
-	
+
 	private static ArrayList<Card> getPile(int pileNum) {
 		switch (pileNum) {
 		case 1: // pile 1
@@ -541,7 +570,7 @@ public class Game {
 		}
 		return kingCorner4;
 	}
-	
+
 	private static void emptyPile(int pileNum) {
 		switch (pileNum) {
 		case 1: // pile 1
@@ -563,12 +592,11 @@ public class Game {
 		}
 	}
 
-	
 	/*
 	 * all methods below are for printing purposes
 	 */
-	
-	//print current state of all the piles
+
+	// print current state of all the piles
 	private static void printPiles() {
 		// print Piles
 		System.out.println("\n---------------Current Piles---------------");
@@ -586,7 +614,7 @@ public class Game {
 	// main user menu
 	// this should be shown to user when its their turn
 	private static void userOptions(ArrayList<Card> userDeck) {
-		//show user's deck
+		// show user's deck
 		System.out.print("\nYour deck: ");
 		printUserDeck(userDeck);
 		System.out.println();

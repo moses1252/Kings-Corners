@@ -13,6 +13,10 @@ Current State: 70%
 Application still has minor bugs
 Still need to specific apply rules, such as red cards only being placed on other red cards, and vice versa with black cards. 
 
+2-20-23
+Move Piles doesn't give you errors anymore
+player should be able to move piles if valid, and if the move is not valid then it will prompt the use that the move isn't possible. 
+
 --2-14-23
 Updated the visuals commands so who ever is playing can read better
 Cleaned up and removed unnecessary lines from Game class. Rearranged methods so it should be more readable for other developers

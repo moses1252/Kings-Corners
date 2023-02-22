@@ -10,8 +10,13 @@ Watch me: https://youtu.be/mHaIsy8vHns
 
 --log
 Current State: 75%
-Application still has minor bugs
+Current state of project has no known bugs. 
 Still need to specific apply rules, such as red cards only being placed on other red cards, and vice versa with black cards. 
+
+2-21-23
+Bug status: all known bugs are fixed. Will continue testing to ensure user experience is top notch.
+Fixed never ending deck bug
+Once the deck is empty, It will no longer add null values to a players deck. If the deck is empty, no cards are added to players deck. 
 
 2-20-23
 Move Piles doesn't give you errors anymore

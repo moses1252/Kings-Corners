@@ -78,4 +78,12 @@ public class DeckOfCards {
     public void shuffle() {
         Collections.shuffle(deck);
     }
+    
+    //check if deck is empty
+    public boolean isEmpty() {
+    	if (deck.size() == 0) {
+    		return true;
+    	}
+    	return false;
+    }
 }

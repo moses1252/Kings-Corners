@@ -79,7 +79,9 @@ public class Game {
 				System.out.print("\nPlayer's 1 Deck: ");
 
 				// draw a card from the pile at the beginning of each turn
-				user1Deck.add(deck.dealTopCard());
+				if (!deck.isEmpty()) {
+					user1Deck.add(deck.dealTopCard());
+				}
 				playerTurn(user1Deck);
 			}
 
@@ -98,7 +100,9 @@ public class Game {
 				// printUserDeck(user2Deck);
 
 				// draw a card from the pile at the beginning of each turn
-				user2Deck.add(deck.dealTopCard());
+				if (!deck.isEmpty()) {
+					user2Deck.add(deck.dealTopCard());
+				}
 				playerTurn(user2Deck);
 			}
 		}

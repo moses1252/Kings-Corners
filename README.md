@@ -9,7 +9,7 @@ It may seem a little confusing trying to play this kings corner in the form of a
 Watch me: https://youtu.be/mHaIsy8vHns
 
 --log
-Current State: 70%
+Current State: 75%
 Application still has minor bugs
 Still need to specific apply rules, such as red cards only being placed on other red cards, and vice versa with black cards. 
 
